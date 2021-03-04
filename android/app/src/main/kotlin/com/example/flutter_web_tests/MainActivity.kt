@@ -1,4 +1,4 @@
-package com.example.flutter_web_tests
+package com.example.minha_biblioteca
 
 import io.flutter.embedding.android.FlutterActivity
 

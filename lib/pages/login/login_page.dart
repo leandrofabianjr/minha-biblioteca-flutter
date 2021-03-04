@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_web_tests/services/auth.dart';
+import 'package:minha_biblioteca/services/auth.dart';
 
 class LoginPage extends StatelessWidget {
   @override

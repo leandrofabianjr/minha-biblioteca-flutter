@@ -1,6 +1,6 @@
 {
-    "name": "flutter_web_tests",
-    "short_name": "flutter_web_tests",
+    "name": "minha_biblioteca",
+    "short_name": "minha_biblioteca",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

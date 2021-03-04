@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_web_tests/pages/error/error_page.dart';
-import 'package:flutter_web_tests/pages/loading/loading_page.dart';
-import 'package:flutter_web_tests/pages/login/login_page.dart';
+import 'package:minha_biblioteca/pages/error/error_page.dart';
+import 'package:minha_biblioteca/pages/loading/loading_page.dart';
+import 'package:minha_biblioteca/pages/login/login_page.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 

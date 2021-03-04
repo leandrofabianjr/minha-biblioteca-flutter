@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
-project(flutter_web_tests LANGUAGES CXX)
+project(minha_biblioteca LANGUAGES CXX)
 
-set(BINARY_NAME "flutter_web_tests")
+set(BINARY_NAME "minha_biblioteca")
 
 cmake_policy(SET CMP0063 NEW)
 
