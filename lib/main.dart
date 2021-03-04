@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:minha_biblioteca/pages/error/error_page.dart';
+import 'package:minha_biblioteca/pages/list_items/list_items_page.dart';
 import 'package:minha_biblioteca/pages/loading/loading_page.dart';
 import 'package:minha_biblioteca/pages/login/login_page.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:minha_biblioteca/services/auth.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,6 +29,9 @@ class MyApp extends StatelessWidget {
             }
 
             if (snapshot.connectionState == ConnectionState.done) {
+              if (Auth.isUserLogged) {
+                return ListItemsPage();
+              }
               return LoginPage();
             }
 
