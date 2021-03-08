@@ -4,7 +4,7 @@ import 'package:minha_biblioteca/models/publisher.dart';
 import 'package:minha_biblioteca/models/user.dart';
 
 class Item {
-  String uuid;
+  String? uuid;
   String description;
   int year;
   List<Author> authors;
@@ -16,7 +16,7 @@ class Item {
   String? updatedAt;
 
   Item({
-    this.uuid = 'generate uuid',
+    this.uuid,
     required this.description,
     required this.year,
     required this.authors,
