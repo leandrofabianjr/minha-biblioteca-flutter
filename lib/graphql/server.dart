@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-class Config {
+class Server {
   static const _END_POINT = 'minha-biblioteca-hasura.herokuapp.com/v1/graphql';
 
   static String? _token;
@@ -25,7 +25,7 @@ class Config {
 
   static final Link link = authLink.concat(httpLink).concat(websocketLink);
 
-  static Future<ValueNotifier<GraphQLClient>> initailizeClient(
+  static Future<ValueNotifier<GraphQLClient>> buildClient(
     String token,
   ) async {
     _token = token;
