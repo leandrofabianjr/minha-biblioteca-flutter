@@ -5,6 +5,7 @@ class ErrorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.error),
           Text('Algo deu errado'),

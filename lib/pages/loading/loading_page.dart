@@ -5,6 +5,7 @@ class LoadingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           CircularProgressIndicator(),
           Text('Carregando'),
