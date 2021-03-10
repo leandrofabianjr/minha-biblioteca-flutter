@@ -16,10 +16,17 @@ class Server {
     config: SocketClientConfig(
       autoReconnect: true,
       inactivityTimeout: Duration(seconds: 30),
+      initialPayload: () async {
+        return {
+          'headers': {'x-hasura-admin-secret': _token},
+        };
+      },
     ),
   );
 
-  static final Link link = authLink.concat(httpLink).concat(websocketLink);
+  // static final Link link = authLink.concat(httpLink).concat(websocketLink);
+  static final Link link = Link.split((request) => request.isSubscription,
+      websocketLink, authLink.concat(httpLink));
 
   static Future init(String token) async {
     _token = token;

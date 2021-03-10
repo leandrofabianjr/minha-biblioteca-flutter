@@ -12,13 +12,27 @@ class ListItemsPage extends StatelessWidget {
         options: SubscriptionOptions(
           document: gql(
             r'''
-            query {
+            subscription {
               items {
-                year
                 description
-                uuid
-                user {
-                  name
+                authors {
+                  author {
+                    name
+                  }
+                }
+                genres {
+                  genre {
+                    description
+                  }
+                }
+                year
+                publishers {
+                  publisher {
+                    name
+                  }
+                }
+                location {
+                  description
                 }
               }
             }
@@ -43,23 +57,6 @@ class ListItemsPage extends StatelessWidget {
   }
 
   DataTable _buildDataTable(List items) {
-    final rows = <DataRow>[];
-
-    items.forEach((item) {
-      rows.add(
-        DataRow(
-          cells: [
-            DataCell(Text(item['description'])),
-            DataCell(Text('')),
-            DataCell(Text('')),
-            DataCell(Text(item['year'].toString())),
-            DataCell(Text('')),
-            DataCell(Text('')),
-          ],
-        ),
-      );
-    });
-
     return DataTable(
       columns: [
         DataColumn(label: Text('Descrição')),
@@ -69,7 +66,40 @@ class ListItemsPage extends StatelessWidget {
         DataColumn(label: Text('Editora')),
         DataColumn(label: Text('Local')),
       ],
-      rows: rows,
+      rows: List<DataRow>.generate(
+          items.length, (int i) => _buildDataRow(items[i])).toList(),
+    );
+  }
+
+  _buildDataRow(dynamic item) {
+    return DataRow(
+      cells: [
+        DataCell(Text(item['description'])),
+        DataCell(Wrap(
+          children: List<Widget>.generate(
+            item['authors'].length,
+            (int i) => Chip(label: Text(item['authors'][i]['author']['name'])),
+          ),
+        )),
+        DataCell(Wrap(
+          children: List<Widget>.generate(
+            item['genres'].length,
+            (int i) =>
+                Chip(label: Text(item['genres'][i]['genre']['description'])),
+          ),
+        )),
+        DataCell(Text(item['year'].toString())),
+        DataCell(Wrap(
+          children: List<Widget>.generate(
+            item['publishers'].length,
+            (int i) =>
+                Chip(label: Text(item['publishers'][i]['publisher']['name'])),
+          ),
+        )),
+        DataCell(
+          Chip(label: Text(item['location']['description'])),
+        ),
+      ],
     );
   }
 }
