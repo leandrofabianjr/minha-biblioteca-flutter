@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:minha_biblioteca/env.dart';
 import 'package:minha_biblioteca/graphql/server.dart';
 import 'package:minha_biblioteca/pages/error/error_page.dart';
 import 'package:minha_biblioteca/pages/list_items/list_items_page.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
     return FutureBuilder(
       future: Future.wait([
         Firebase.initializeApp(),
-        Server.init(''),
+        Server.init(ENV['ADMIN_PASS']!),
       ]),
       builder: (context, snapshot) {
         return GraphQLProvider(

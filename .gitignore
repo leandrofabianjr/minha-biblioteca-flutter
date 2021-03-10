@@ -46,3 +46,4 @@ app.*.map.json
 /android/app/release
 
 web/firebase-config.js
+lib/env.dart
