@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:minha_biblioteca/models/item.dart';
 import 'package:minha_biblioteca/pages/error/error_page.dart';
 import 'package:minha_biblioteca/pages/loading/loading_page.dart';
-import 'package:minha_biblioteca/services/items_service.dart';
 
 class ListItemsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // return _buildDataTable();
-
     return Scaffold(
       appBar: AppBar(title: Text('Items cadastrados')),
       body: Subscription(
