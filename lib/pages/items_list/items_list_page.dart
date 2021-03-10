@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:minha_biblioteca/graphql/gql_items.dart';
 import 'package:minha_biblioteca/pages/error/error_page.dart';
+import 'package:minha_biblioteca/pages/items_form/items_form_page.dart';
 import 'package:minha_biblioteca/pages/loading/loading_page.dart';
 
 class ItemsListPage extends StatelessWidget {
@@ -8,36 +10,15 @@ class ItemsListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Items cadastrados')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => ItemsFormPage()),
+        ),
+        child: Icon(Icons.add),
+      ),
       body: Subscription(
         options: SubscriptionOptions(
-          document: gql(
-            r'''
-            subscription {
-              items {
-                description
-                authors {
-                  author {
-                    name
-                  }
-                }
-                genres {
-                  genre {
-                    description
-                  }
-                }
-                year
-                publishers {
-                  publisher {
-                    name
-                  }
-                }
-                location {
-                  description
-                }
-              }
-            }
-            ''',
-          ),
+          document: GqlItems.subscription,
         ),
         builder: (result) {
           if (result.hasException) {
