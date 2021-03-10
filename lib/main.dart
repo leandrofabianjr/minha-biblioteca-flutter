@@ -3,7 +3,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:minha_biblioteca/env.dart';
 import 'package:minha_biblioteca/graphql/server.dart';
 import 'package:minha_biblioteca/pages/error/error_page.dart';
-import 'package:minha_biblioteca/pages/list_items/list_items_page.dart';
+import 'package:minha_biblioteca/pages/items_list/items_list_page.dart';
 import 'package:minha_biblioteca/pages/loading/loading_page.dart';
 import 'package:minha_biblioteca/pages/login/login_page.dart';
 
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
 
     if (snapshot.connectionState == ConnectionState.done) {
       if (Auth.isUserLogged) {
-        return ListItemsPage();
+        return ItemsListPage();
       }
       return LoginPage();
     }

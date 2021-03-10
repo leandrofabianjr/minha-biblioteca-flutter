@@ -3,7 +3,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:minha_biblioteca/pages/error/error_page.dart';
 import 'package:minha_biblioteca/pages/loading/loading_page.dart';
 
-class ListItemsPage extends StatelessWidget {
+class ItemsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
