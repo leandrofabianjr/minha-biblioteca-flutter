@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 class LoadingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            CircularProgressIndicator(),
-            Text('Carregando'),
-          ],
-        ),
+    return Center(
+      child: Column(
+        children: [
+          CircularProgressIndicator(),
+          Text('Carregando'),
+        ],
       ),
     );
   }
