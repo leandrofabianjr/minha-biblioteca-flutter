@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:minha_biblioteca/app_module.dart';
 import 'package:minha_biblioteca/env.dart';
 import 'package:minha_biblioteca/graphql/server.dart';
 import 'package:minha_biblioteca/pages/error/error_page.dart';
 import 'package:minha_biblioteca/pages/items_list/items_list_page.dart';
 import 'package:minha_biblioteca/pages/loading/loading_page.dart';
 import 'package:minha_biblioteca/pages/login/login_page.dart';
-
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:minha_biblioteca/services/auth.dart';
 
 void main() async {
-  runApp(MyApp());
+  runApp(ModularApp(module: AppModule(), child: MainWidget()));
 }
 
-class MyApp extends StatelessWidget {
+class MainWidget extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -24,32 +25,27 @@ class MyApp extends StatelessWidget {
         Server.init(ENV['ADMIN_PASS']!),
       ]),
       builder: (context, snapshot) {
-        return GraphQLProvider(
-          client: Server.client,
-          child: MaterialApp(
-            title: 'Flutter Demo',
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-            ),
-            home: _buildHomePage(snapshot),
-          ),
-        );
+        if (snapshot.hasError) {
+          return Scaffold(body: ErrorPage());
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          final initialRoute = Auth.isUserLogged ? '/items' : '/';
+
+          return GraphQLProvider(
+            client: Server.client,
+            child: MaterialApp(
+              title: 'Flutter Demo',
+              theme: ThemeData(
+                primarySwatch: Colors.blue,
+              ),
+              initialRoute: initialRoute,
+            ).modular(),
+          );
+        }
+
+        return Scaffold(body: LoadingPage());
       },
     );
-  }
-
-  _buildHomePage(AsyncSnapshot snapshot) {
-    if (snapshot.hasError) {
-      return Scaffold(body: ErrorPage());
-    }
-
-    if (snapshot.connectionState == ConnectionState.done) {
-      if (Auth.isUserLogged) {
-        return ItemsListPage();
-      }
-      return LoginPage();
-    }
-
-    return Scaffold(body: LoadingPage());
   }
 }

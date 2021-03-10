@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:minha_biblioteca/graphql/gql_items.dart';
 import 'package:minha_biblioteca/pages/error/error_page.dart';
@@ -11,9 +12,7 @@ class ItemsListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Items cadastrados')),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => ItemsFormPage()),
-        ),
+        onPressed: () => Modular.to.navigate('/items/new'),
         child: Icon(Icons.add),
       ),
       body: Subscription(

@@ -1,5 +1,6 @@
 import 'package:minha_biblioteca/models/author.dart';
 import 'package:minha_biblioteca/models/genre.dart';
+import 'package:minha_biblioteca/models/location.dart';
 import 'package:minha_biblioteca/models/publisher.dart';
 import 'package:minha_biblioteca/models/user.dart';
 
@@ -10,7 +11,7 @@ class Item {
   List<Author> authors;
   List<Genre> genre;
   List<Publisher> publisher;
-  String location;
+  Location location;
   User createdBy;
   String? createdAt;
   String? updatedAt;
