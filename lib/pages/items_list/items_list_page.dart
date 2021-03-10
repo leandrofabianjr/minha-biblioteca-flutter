@@ -3,7 +3,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:minha_biblioteca/graphql/gql_items.dart';
 import 'package:minha_biblioteca/pages/error/error_page.dart';
-import 'package:minha_biblioteca/pages/items_form/items_form_page.dart';
 import 'package:minha_biblioteca/pages/loading/loading_page.dart';
 
 class ItemsListPage extends StatelessWidget {

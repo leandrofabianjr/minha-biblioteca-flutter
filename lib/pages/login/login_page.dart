@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minha_biblioteca/pages/items_list/items_list_page.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:minha_biblioteca/services/auth.dart';
 
 class LoginPage extends StatelessWidget {
@@ -16,10 +16,7 @@ class LoginPage extends StatelessWidget {
               onPressed: () async {
                 await Auth.signInWithGoogle();
                 print(Auth.currentUser);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => ItemsListPage()),
-                );
+                Modular.to.navigate('/items');
               },
               child: Text('Login com Google'),
               style: ElevatedButton.styleFrom(
