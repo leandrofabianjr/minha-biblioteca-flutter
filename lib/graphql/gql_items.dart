@@ -1,8 +1,8 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GqlItems {
-  static get subscription => gql(r'''
-    subscription {
+  static get query => gql(r'''
+    query {
       items {
         description
         authors {

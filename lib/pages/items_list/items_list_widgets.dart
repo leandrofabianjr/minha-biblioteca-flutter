@@ -16,7 +16,7 @@ class ItemsList extends StatelessWidget {
       ),
       body: Subscription(
         options: SubscriptionOptions(
-          document: GqlItems.subscription,
+          document: GqlItems.query,
         ),
         builder: (result) {
           if (result.hasException) {

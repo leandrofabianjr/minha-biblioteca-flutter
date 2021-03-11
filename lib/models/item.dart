@@ -28,4 +28,17 @@ class Item {
     this.createdAt,
     this.updatedAt,
   });
+
+  factory Item.fromJson(Map<String, dynamic> json) {
+    return Item(
+      this.description: ,
+      this.year: ,
+      this.authors: ,
+      this.genre: ,
+      this.publisher: ,
+      this.location: ,
+      this.createdBy: ,
+
+    );
+  }
 }

@@ -29,16 +29,12 @@ class Server {
   static final Link link = Link.split((request) => request.isSubscription,
       websocketLink, authLink.concat(httpLink));
 
-  static ValueNotifier<GraphQLClient> get client {
-    ValueNotifier<GraphQLClient> client = ValueNotifier(
-      GraphQLClient(
-        cache: GraphQLCache(
-            // store: HiveStore(),
-            ),
-        link: link,
-      ),
+  static GraphQLClient get client {
+    return GraphQLClient(
+      cache: GraphQLCache(
+          // store: HiveStore(),
+          ),
+      link: link,
     );
-
-    return client;
   }
 }
