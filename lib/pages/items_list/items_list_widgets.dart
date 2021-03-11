@@ -5,7 +5,7 @@ import 'package:minha_biblioteca/graphql/gql_items.dart';
 import 'package:minha_biblioteca/pages/error/error_page.dart';
 import 'package:minha_biblioteca/pages/loading/loading_page.dart';
 
-class ItemsListPage extends StatelessWidget {
+class ItemsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

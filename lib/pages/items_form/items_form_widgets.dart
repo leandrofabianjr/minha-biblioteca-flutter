@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:minha_biblioteca/components/dropdown_with_search_and_chips.dart';
 
-class ItemsFormPage extends StatefulWidget {
+class ItemsForm extends StatefulWidget {
   final String? id;
 
-  ItemsFormPage({
+  ItemsForm({
     this.id,
   }) : super();
 
   @override
-  _ItemsFormPageState createState() => _ItemsFormPageState();
+  _ItemsFormState createState() => _ItemsFormState();
 }
 
-class _ItemsFormPageState extends State<ItemsFormPage> {
+class _ItemsFormState extends State<ItemsForm> {
   final _formKey = GlobalKey<FormState>();
   String? _description;
   int _year = 2000;
