@@ -36,6 +36,7 @@ class MainWidget extends StatelessWidget {
               title: 'Flutter Demo',
               theme: ThemeData(
                 primarySwatch: Colors.blue,
+                accentColor: Colors.pink,
               ),
               initialRoute: initialRoute,
             ).modular(),
