@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minha_biblioteca/components/dropdown_with_search_and_chips.dart';
 
 class ItemsFormPage extends StatefulWidget {
   final String? id;
@@ -25,7 +26,7 @@ class _ItemsFormPageState extends State<ItemsFormPage> {
       body: Form(
         key: _formKey,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8.0),
           child: Column(
             children: [
               TextFormField(
@@ -36,6 +37,7 @@ class _ItemsFormPageState extends State<ItemsFormPage> {
                     val!.length < 1 ? 'Campo obrigatório' : null,
               ),
               _buildYearFormField(),
+              DropdownWithSearchAndChips(context: context),
               Container(
                 padding: EdgeInsets.only(top: 16),
                 width: double.maxFinite,
