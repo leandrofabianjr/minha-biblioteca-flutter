@@ -14,6 +14,8 @@ class ItemsService {
       throw FetchFailure(result.exception);
     }
 
-    return result.data!['items'].map((json) => Item.fromJson(json)).toList();
+    return (result.data!['items'] as List)
+        .map((json) => Item.fromJson(json))
+        .toList();
   }
 }

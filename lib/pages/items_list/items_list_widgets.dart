@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:minha_biblioteca/graphql/gql_items.dart';
-import 'package:minha_biblioteca/pages/error/error_page.dart';
+import 'package:minha_biblioteca/models/item.dart';
+import 'package:minha_biblioteca/pages/items_list/items_list_store.dart';
 import 'package:minha_biblioteca/pages/loading/loading_page.dart';
 
 class ItemsList extends StatelessWidget {
+  final itemsList = ItemsListStore()..fetch();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,28 +16,19 @@ class ItemsList extends StatelessWidget {
         onPressed: () => Modular.to.navigate('/items/new'),
         child: Icon(Icons.add),
       ),
-      body: Subscription(
-        options: SubscriptionOptions(
-          document: GqlItems.query,
-        ),
-        builder: (result) {
-          if (result.hasException) {
-            print('Error ----> ${result.exception}');
-            return ErrorPage();
+      body: Observer(
+        builder: (context) {
+          if (!itemsList.loading) {
+            print(itemsList.items.toString());
+            return _buildDataTable();
           }
-          if (result.data != null) {
-            final items = result.data?['items'] ?? [];
-            print(items.toString());
-            return _buildDataTable(items);
-          }
-
           return LoadingPage();
         },
       ),
     );
   }
 
-  DataTable _buildDataTable(List items) {
+  DataTable _buildDataTable() {
     return DataTable(
       columns: [
         DataColumn(label: Text('Descrição')),
@@ -46,37 +39,37 @@ class ItemsList extends StatelessWidget {
         DataColumn(label: Text('Local')),
       ],
       rows: List<DataRow>.generate(
-          items.length, (int i) => _buildDataRow(items[i])).toList(),
+        itemsList.items.length,
+        (int i) => _buildDataRow(itemsList.items[i]),
+      ),
     );
   }
 
-  _buildDataRow(dynamic item) {
+  _buildDataRow(Item item) {
     return DataRow(
       cells: [
-        DataCell(Text(item['description'])),
+        DataCell(Text(item.description)),
         DataCell(Wrap(
           children: List<Widget>.generate(
-            item['authors'].length,
-            (int i) => Chip(label: Text(item['authors'][i]['author']['name'])),
+            item.authors.length,
+            (int i) => Chip(label: Text(item.authors[i].name)),
           ),
         )),
         DataCell(Wrap(
           children: List<Widget>.generate(
-            item['genres'].length,
-            (int i) =>
-                Chip(label: Text(item['genres'][i]['genre']['description'])),
+            item.genres.length,
+            (int i) => Chip(label: Text(item.genres[i].description)),
           ),
         )),
-        DataCell(Text(item['year'].toString())),
+        DataCell(Text(item.year.toString())),
         DataCell(Wrap(
           children: List<Widget>.generate(
-            item['publishers'].length,
-            (int i) =>
-                Chip(label: Text(item['publishers'][i]['publisher']['name'])),
+            item.publishers.length,
+            (int i) => Chip(label: Text(item.publishers[i].name)),
           ),
         )),
         DataCell(
-          Chip(label: Text(item['location']['description'])),
+          Chip(label: Text(item.location.description)),
         ),
       ],
     );

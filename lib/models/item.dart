@@ -9,10 +9,10 @@ class Item {
   String description;
   int year;
   List<Author> authors;
-  List<Genre> genre;
-  List<Publisher> publisher;
+  List<Genre> genres;
+  List<Publisher> publishers;
   Location location;
-  User createdBy;
+  User? createdBy;
   String? createdAt;
   String? updatedAt;
 
@@ -21,24 +21,28 @@ class Item {
     required this.description,
     required this.year,
     required this.authors,
-    required this.genre,
-    required this.publisher,
+    required this.genres,
+    required this.publishers,
     required this.location,
-    required this.createdBy,
+    this.createdBy,
     this.createdAt,
     this.updatedAt,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) {
     return Item(
-      this.description: ,
-      this.year: ,
-      this.authors: ,
-      this.genre: ,
-      this.publisher: ,
-      this.location: ,
-      this.createdBy: ,
-
+      description: json['description'],
+      year: json['year'],
+      authors: (json['authors'] as List)
+          .map((json) => Author.fromJson(json['author']))
+          .toList(),
+      genres: (json['genres'] as List)
+          .map((json) => Genre.fromJson(json['genre']))
+          .toList(),
+      publishers: (json['publishers'] as List)
+          .map((json) => Publisher.fromJson(json['publisher']))
+          .toList(),
+      location: Location.fromJson(json['location']),
     );
   }
 }
