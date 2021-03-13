@@ -45,8 +45,6 @@ class _ItemsFormState extends State<ItemsForm> {
                   child: Text('Salvar'),
                   onPressed: () {
                     _formKey.currentState?.save();
-                    print(_description);
-                    print(_year);
                   },
                 ),
               )
@@ -84,7 +82,6 @@ class _ItemsFormState extends State<ItemsForm> {
                 firstDate: DateTime(0),
                 lastDate: DateTime.now(),
                 onChanged: (val) {
-                  print(val);
                   _year = val.year;
                   _yearController.text = _year.toString();
                   Navigator.of(context).pop();

@@ -6,47 +6,99 @@ import 'package:minha_biblioteca/pages/items_list/items_list_store.dart';
 import 'package:minha_biblioteca/pages/loading/loading_page.dart';
 
 class ItemsList extends StatelessWidget {
-  final itemsList = ItemsListStore()..fetch();
+  final itemsList = ItemsListStore(
+    page: 1,
+    rowsPerPage: PaginatedDataTable.defaultRowsPerPage,
+    sortAscending: false,
+    sortColumnIndex: 0,
+  )..fetch();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Items cadastrados')),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Modular.to.navigate('/items/new'),
-        child: Icon(Icons.add),
-      ),
-      body: Observer(
-        builder: (context) {
-          if (!itemsList.loading) {
-            print(itemsList.items.toString());
-            return _buildDataTable();
-          }
-          return LoadingPage();
-        },
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Observer(
+            builder: (context) {
+              if (!itemsList.loading) {
+                return _buildDataTable(context);
+              }
+              return LoadingPage();
+            },
+          ),
+        ),
       ),
     );
   }
 
-  DataTable _buildDataTable() {
-    return DataTable(
+  Widget _buildDataTable(BuildContext context) {
+    final headerTextStyle = TextStyle(color: Theme.of(context).primaryColor);
+    return PaginatedDataTable(
       columns: [
-        DataColumn(label: Text('Descrição')),
-        DataColumn(label: Text('Autores')),
-        DataColumn(label: Text('Gêneros')),
-        DataColumn(label: Text('Ano')),
-        DataColumn(label: Text('Editora')),
-        DataColumn(label: Text('Local')),
+        DataColumn(
+          label: Text('Descrição', style: headerTextStyle),
+          onSort: _sort,
+        ),
+        DataColumn(
+          label: Text('Autores', style: headerTextStyle),
+          onSort: _sort,
+        ),
+        DataColumn(
+          label: Text('Gêneros', style: headerTextStyle),
+          onSort: _sort,
+        ),
+        DataColumn(
+          label: Text('Ano', style: headerTextStyle),
+          onSort: _sort,
+        ),
+        DataColumn(
+          label: Text('Editora', style: headerTextStyle),
+          onSort: _sort,
+        ),
+        DataColumn(
+          label: Text('Local', style: headerTextStyle),
+          onSort: _sort,
+        ),
       ],
-      rows: List<DataRow>.generate(
-        itemsList.items.length,
-        (int i) => _buildDataRow(itemsList.items[i]),
+      source: ItemsDataTableSource(
+        items: itemsList.items,
+        totalCount: itemsList.totalCount,
       ),
+      header: Text('Items'),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () {
+            Modular.to.pushNamed('/items/new');
+          },
+        ),
+      ],
+      availableRowsPerPage: [5, 10, 20, 50, 100],
+      onRowsPerPageChanged: (rowsPerPage) =>
+          itemsList.changePage(rowsPerPage: rowsPerPage!),
+      onPageChanged: (page) => itemsList.changePage(page: page),
+      rowsPerPage: itemsList.rowsPerPage,
+      sortAscending: itemsList.sortAscending,
+      sortColumnIndex: itemsList.sortColumnIndex,
     );
   }
 
-  _buildDataRow(Item item) {
-    return DataRow(
+  _sort(i, asc) {
+    itemsList.sort(i, asc);
+  }
+}
+
+class ItemsDataTableSource extends DataTableSource {
+  final List<Item> items;
+  final int totalCount;
+
+  ItemsDataTableSource({required this.items, required this.totalCount});
+  @override
+  DataRow? getRow(int index) {
+    final item = items[index];
+    return DataRow.byIndex(
+      index: index,
       cells: [
         DataCell(Text(item.description)),
         DataCell(Wrap(
@@ -74,4 +126,13 @@ class ItemsList extends StatelessWidget {
       ],
     );
   }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => totalCount;
+
+  @override
+  int get selectedRowCount => PaginatedDataTable.defaultRowsPerPage;
 }
