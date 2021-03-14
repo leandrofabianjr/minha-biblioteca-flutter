@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:minha_biblioteca/components/dropdown_with_search_and_chips.dart';
+import 'package:minha_biblioteca/components/dropdown_with_search/widgets.dart';
+import 'package:minha_biblioteca/models/author.dart';
+import 'package:minha_biblioteca/services/authors_service.dart';
 
 class ItemsForm extends StatefulWidget {
   final String? id;
@@ -37,7 +39,22 @@ class _ItemsFormState extends State<ItemsForm> {
                     val!.length < 1 ? 'Campo obrigatório' : null,
               ),
               _buildYearFormField(),
-              DropdownWithSearchAndChips(context: context),
+              DropdownWithSearch<Author>(
+                context: context,
+                onSearch: (term) => AuthorsService().search(
+                  userId: 'd3363699-fc2f-4b00-af2f-0c68c20dd951',
+                  limit: 10,
+                  searchByName: term,
+                ),
+                onBuildLabel: (author) => Text(author.name),
+                placeholder: 'Procure por um autor',
+                onChangeSelectedList: (authors) {
+                  authors.forEach((a) {
+                    print(a.uuid);
+                    print(a.name);
+                  });
+                },
+              ),
               Container(
                 padding: EdgeInsets.only(top: 16),
                 width: double.maxFinite,

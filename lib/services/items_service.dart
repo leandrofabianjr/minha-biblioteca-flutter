@@ -33,7 +33,7 @@ class ItemsService {
     if (searchLocation != null) variables['limit'] = searchLocation;
 
     final result = await _client.query(QueryOptions(
-      document: GqlItems.query,
+      document: GqlItems.queryList,
       variables: variables,
     ));
 

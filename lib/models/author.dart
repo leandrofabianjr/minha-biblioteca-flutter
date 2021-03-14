@@ -1,11 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:minha_biblioteca/models/user.dart';
 
-class Author {
-  String? uuid;
-  String name;
-  User? createdBy;
-  String? createdAt;
-  String? updatedAt;
+class Author extends Equatable {
+  final String? uuid;
+  final String name;
+  final User? createdBy;
+  final String? createdAt;
+  final String? updatedAt;
 
   Author({
     this.uuid,
@@ -17,7 +18,11 @@ class Author {
 
   factory Author.fromJson(Map<String, dynamic> json) {
     return Author(
+      uuid: json['uuid'],
       name: json['name'],
     );
   }
+
+  @override
+  List<Object?> get props => [uuid];
 }

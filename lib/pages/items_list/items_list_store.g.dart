@@ -151,7 +151,7 @@ mixin _$ItemsListStore on _ItemsListStore, Store {
   }
 
   @override
-  dynamic changePage({int? rowsPerPage, int? page}) {
+  dynamic changePage({int rowsPerPage = -1, int page = -1}) {
     final _$actionInfo = _$_ItemsListStoreActionController.startAction(
         name: '_ItemsListStore.changePage');
     try {

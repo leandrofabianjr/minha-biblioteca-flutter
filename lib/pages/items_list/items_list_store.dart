@@ -2,13 +2,10 @@ import 'package:minha_biblioteca/models/item.dart';
 import 'package:minha_biblioteca/services/items_service.dart';
 import 'package:mobx/mobx.dart';
 
-// Include generated file
 part 'items_list_store.g.dart';
 
-// This is the class used by rest of your codebase
 class ItemsListStore = _ItemsListStore with _$ItemsListStore;
 
-// The store-class
 abstract class _ItemsListStore with Store {
   final _service = ItemsService();
 
@@ -70,9 +67,9 @@ abstract class _ItemsListStore with Store {
   }
 
   @action
-  changePage({int? rowsPerPage, int? page}) {
-    if (rowsPerPage != null) this.rowsPerPage = rowsPerPage;
-    if (page != null) this.page = page;
+  changePage({int rowsPerPage = -1, int page = -1}) {
+    if (rowsPerPage != -1) this.rowsPerPage = rowsPerPage;
+    if (page != -1) this.page = page;
     fetch();
   }
 }

@@ -1,7 +1,7 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GqlItems {
-  static get query => gql(r'''
+  static get queryList => gql(r'''
 query (
   $userId: String!,
   $offset: Int = 0,

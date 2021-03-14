@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:minha_biblioteca/models/item.dart';
-import 'package:minha_biblioteca/pages/error/error_page.dart';
 import 'package:minha_biblioteca/pages/items_list/items_list_store.dart';
 import 'package:minha_biblioteca/pages/loading/loading_page.dart';
 
