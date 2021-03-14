@@ -8,7 +8,8 @@ class LoadingPage extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           CircularProgressIndicator(),
-          Text('Carregando'),
+          SizedBox(height: 16),
+          Text('Carregando', style: TextStyle(fontSize: 16)),
         ],
       ),
     );

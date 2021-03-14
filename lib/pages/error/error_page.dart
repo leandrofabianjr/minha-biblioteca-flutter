@@ -7,8 +7,9 @@ class ErrorPage extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.error),
-          Text('Algo deu errado'),
+          Icon(Icons.error, color: Theme.of(context).accentColor, size: 36),
+          SizedBox(height: 16),
+          Text('Algo deu errado', style: TextStyle(fontSize: 16)),
         ],
       ),
     );
