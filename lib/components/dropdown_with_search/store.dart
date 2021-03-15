@@ -2,24 +2,37 @@ import 'dart:async';
 
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:minha_biblioteca/components/dropdown_with_search/widgets.dart';
+import 'package:minha_biblioteca/models/author.dart';
 import 'package:mobx/mobx.dart';
 
 part 'store.g.dart';
 
+class DropdownListItem<T> = _DropdownListItem<T> with _$DropdownListItem<T>;
+
+abstract class _DropdownListItem<T> with Store {
+  final T itemData;
+
+  @observable
+  bool selected = false;
+
+  _DropdownListItem(this.itemData);
+}
+
 class DropdownWithSearchStore<T> = _DropdownWithSearchStore<T>
-    with _$DropdownWithSearchStore;
+    with _$DropdownWithSearchStore<T>;
 
 abstract class _DropdownWithSearchStore<T> with Store implements Disposable {
   final OnSearch<T> _onSearch;
 
   @observable
-  ObservableList<T> selectedList = ObservableList<T>();
+  ObservableList<T> selectedList;
 
   // ignore: avoid_init_to_null
   OnChangeSelectedList<T>? onChangeSelectedList = null;
 
   @observable
-  ObservableList<T> searchList = ObservableList<T>();
+  ObservableList<DropdownListItem<T>> searchList =
+      ObservableList<DropdownListItem<T>>();
 
   @observable
   bool loading = false;
@@ -62,9 +75,10 @@ abstract class _DropdownWithSearchStore<T> with Store implements Disposable {
     try {
       print('iniciou pesquisa');
       final response = await _onSearch(term);
+      final dropdownList = response.map((i) => DropdownListItem<T>(i)).toList();
       searchList
         ..clear()
-        ..addAll(response);
+        ..addAll(dropdownList);
       print('terminou pesquisa');
     } catch (ex) {
       print(ex);
@@ -74,10 +88,26 @@ abstract class _DropdownWithSearchStore<T> with Store implements Disposable {
   }
 
   @action
-  void select(T selected) {
-    if (!selectedList.remove(selected)) {
-      selectedList.add(selected);
+  void select(int searchListItemIndex) {
+    print('--$searchListItemIndex');
+    final item = searchList[searchListItemIndex];
+
+    if (item.selected = !selectedList.remove(item.itemData)) {
+      selectedList.add(item.itemData);
     }
+
+    // Foi preciso substituir o DropdownListItem para acionar o Observer
+    // Somente alterando o DropdownListItem.selected, o widget era atualizado
+    searchList[searchListItemIndex] = DropdownListItem<T>(item.itemData);
+    searchList[searchListItemIndex].selected = item.selected;
     onChangeSelectedList!(selectedList);
+  }
+
+  @action
+  void remove(T selectedItemToRemove) {
+    print('--${(selectedItemToRemove as Author).name}');
+    final searchListItemIndex =
+        searchList.indexWhere((item) => item.itemData == selectedItemToRemove);
+    select(searchListItemIndex);
   }
 }

@@ -49,33 +49,36 @@ class DropdownWithSearch<T> extends StatelessWidget {
             ),
           ),
           Observer(
-            builder: (context) => Wrap(
-              children: List<Widget>.generate(
-                store.selectedList.length,
-                (i) => Padding(
-                  padding: EdgeInsets.only(right: 4, bottom: 4),
-                  child: InputChip(
-                    label: onBuildLabel(store.searchList[i]),
-                    onDeleted: () => print('removeu'),
-                    deleteIcon: Icon(Icons.delete),
-                    deleteIconColor: Theme.of(context).accentColor,
+            builder: (context) {
+              print('selecionados');
+              return Wrap(
+                children: List<Widget>.generate(
+                  store.selectedList.length,
+                  (i) => Padding(
+                    padding: EdgeInsets.only(right: 4, bottom: 4),
+                    child: InputChip(
+                      label: onBuildLabel(store.selectedList[i]),
+                      onDeleted: () => store.remove(store.selectedList[i]),
+                      deleteIcon: Icon(Icons.delete),
+                      deleteIconColor: Theme.of(context).accentColor,
+                    ),
                   ),
-                ),
-              )..add(
-                  InputChip(
-                    label: Text('Adicionar',
-                        style: TextStyle(color: Colors.white)),
-                    avatar: Icon(Icons.add, color: Colors.white),
-                    onSelected: (_) {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: _buildBottomSheet,
-                      );
-                    },
-                    backgroundColor: Theme.of(context).primaryColor,
+                )..add(
+                    InputChip(
+                      label: Text('Adicionar',
+                          style: TextStyle(color: Colors.white)),
+                      avatar: Icon(Icons.add, color: Colors.white),
+                      onSelected: (_) {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: _buildBottomSheet,
+                        );
+                      },
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
                   ),
-                ),
-            ),
+              );
+            },
           ),
         ],
       ),
@@ -100,18 +103,19 @@ class DropdownWithSearch<T> extends StatelessWidget {
         ),
         Expanded(
           child: Observer(builder: (context) {
+            print('pesquisa');
             if (!store.loading) {
               if (store.searchList.length > 0) {
                 return ListView.builder(
                   itemCount: store.searchList.length,
                   itemBuilder: (_, i) => CheckboxListTile(
                     controlAffinity: ListTileControlAffinity.leading,
-                    title: onBuildLabel(store.searchList[i]),
-                    value: false,
+                    title: onBuildLabel(store.searchList[i].itemData),
                     onChanged: (_) {
-                      store.select(store.searchList[i]);
+                      store.select(i);
                     },
-                    selected: store.selectedList.contains(store.searchList[i]),
+                    value: store.searchList[i].selected,
+                    selected: store.searchList[i].selected,
                   ),
                 );
               }

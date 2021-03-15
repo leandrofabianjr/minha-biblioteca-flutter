@@ -8,6 +8,30 @@ part of 'store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
+mixin _$DropdownListItem<T> on _DropdownListItem<T>, Store {
+  final _$selectedAtom = Atom(name: '_DropdownListItem.selected');
+
+  @override
+  bool get selected {
+    _$selectedAtom.reportRead();
+    return super.selected;
+  }
+
+  @override
+  set selected(bool value) {
+    _$selectedAtom.reportWrite(value, super.selected, () {
+      super.selected = value;
+    });
+  }
+
+  @override
+  String toString() {
+    return '''
+selected: ${selected}
+    ''';
+  }
+}
+
 mixin _$DropdownWithSearchStore<T> on _DropdownWithSearchStore<T>, Store {
   final _$selectedListAtom =
       Atom(name: '_DropdownWithSearchStore.selectedList');
@@ -28,13 +52,13 @@ mixin _$DropdownWithSearchStore<T> on _DropdownWithSearchStore<T>, Store {
   final _$searchListAtom = Atom(name: '_DropdownWithSearchStore.searchList');
 
   @override
-  ObservableList<T> get searchList {
+  ObservableList<DropdownListItem<T>> get searchList {
     _$searchListAtom.reportRead();
     return super.searchList;
   }
 
   @override
-  set searchList(ObservableList<T> value) {
+  set searchList(ObservableList<DropdownListItem<T>> value) {
     _$searchListAtom.reportWrite(value, super.searchList, () {
       super.searchList = value;
     });
@@ -92,11 +116,22 @@ mixin _$DropdownWithSearchStore<T> on _DropdownWithSearchStore<T>, Store {
   }
 
   @override
-  void select(T selected) {
+  void select(int searchListItemIndex) {
     final _$actionInfo = _$_DropdownWithSearchStoreActionController.startAction(
         name: '_DropdownWithSearchStore.select');
     try {
-      return super.select(selected);
+      return super.select(searchListItemIndex);
+    } finally {
+      _$_DropdownWithSearchStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void remove(T selectedItemToRemove) {
+    final _$actionInfo = _$_DropdownWithSearchStoreActionController.startAction(
+        name: '_DropdownWithSearchStore.remove');
+    try {
+      return super.remove(selectedItemToRemove);
     } finally {
       _$_DropdownWithSearchStoreActionController.endAction(_$actionInfo);
     }
