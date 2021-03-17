@@ -17,29 +17,34 @@ class LoginPage extends StatelessWidget {
             return ErrorPage();
           }
 
-          if (snapshot.data == null) {
+          if (Auth.isUserLogged) {
+            Modular.to.navigate('/items');
             return LoadingPage();
           }
 
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    await Auth.signInWithGoogle();
-                    print(Auth.currentUser);
-                    Modular.to.navigate('/items');
-                  },
-                  child: Text('Login com Google'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
-                  ),
-                )
-              ],
-            ),
-          );
+          if (snapshot.data != null) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      await Auth.signInWithGoogle();
+                      print(Auth.currentUser);
+                      Modular.to.navigate('/items');
+                    },
+                    child: Text('Login com Google'),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red,
+                    ),
+                  )
+                ],
+              ),
+            );
+          }
+
+          return LoadingPage();
         },
       ),
     );

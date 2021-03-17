@@ -1,16 +1,16 @@
 # Minha Biblioteca - Flutter
 
-A new Flutter project.
+## Build 
 
-## Getting Started
+### Web
 
-This project is a starting point for a Flutter application.
+Criar build:
+```shell
+flutter build web
+```
 
-A few resources to get you started if this is your first Flutter project:
+Servir aplicação localmente em container:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```shell
+docker run --rm -it -h "minha-biblioteca.dev" -v "${PWD}/build/web:/usr/local/apache2/htdocs" --name httpd -p 8888:80 httpd
+```
