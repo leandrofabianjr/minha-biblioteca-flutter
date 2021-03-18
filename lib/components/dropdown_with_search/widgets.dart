@@ -9,11 +9,13 @@ typedef OnChangeSelectedList<T> = void Function(List<T> selecteds);
 
 class DropdownWithSearch<T> extends StatelessWidget {
   final BuildContext context;
+  final String label;
   final OnSearch<T> onSearch;
   final Widget Function(T) onBuildLabel;
   final String placeholder;
   final OnChangeSelectedList<T>? onChangeSelectedList;
   final List<T>? selectedList;
+  final bool uniqueItem;
 
   late final store = DropdownWithSearchStore(
     onSearch: onSearch,
@@ -24,11 +26,13 @@ class DropdownWithSearch<T> extends StatelessWidget {
   DropdownWithSearch({
     Key? key,
     required this.context,
+    required this.label,
     required this.onSearch,
     required this.onBuildLabel,
     this.placeholder = 'Pesquisar',
     this.onChangeSelectedList,
     this.selectedList,
+    this.uniqueItem = false,
   }) : super(key: key);
 
   @override
@@ -41,7 +45,7 @@ class DropdownWithSearch<T> extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 12, bottom: 4),
             child: Text(
-              'Autor(es)',
+              label,
               style: TextStyle(
                 color: Theme.of(context).primaryColor,
                 fontSize: Theme.of(context).textTheme.caption!.fontSize,
@@ -58,14 +62,14 @@ class DropdownWithSearch<T> extends StatelessWidget {
                     padding: EdgeInsets.only(right: 4, bottom: 4),
                     child: InputChip(
                       label: onBuildLabel(store.selectedList[i]),
-                      onDeleted: () => store.remove(store.selectedList[i]),
+                      onDeleted: () => store.select(store.selectedList[i]),
                       deleteIcon: Icon(Icons.delete),
                       deleteIconColor: Theme.of(context).accentColor,
                     ),
                   ),
                 )..add(
                     InputChip(
-                      label: Text('Adicionar',
+                      label: Text(uniqueItem ? 'Selecione' : 'Adicionar',
                           style: TextStyle(color: Colors.white)),
                       avatar: Icon(Icons.add, color: Colors.white),
                       onSelected: (_) {
@@ -112,7 +116,7 @@ class DropdownWithSearch<T> extends StatelessWidget {
                     controlAffinity: ListTileControlAffinity.leading,
                     title: onBuildLabel(store.searchList[i].itemData),
                     onChanged: (_) {
-                      store.select(i);
+                      store.select(store.searchList[i].itemData, uniqueItem);
                     },
                     value: store.searchList[i].selected,
                     selected: store.searchList[i].selected,

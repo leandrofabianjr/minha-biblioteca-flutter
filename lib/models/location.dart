@@ -1,11 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:minha_biblioteca/models/user.dart';
 
-class Location {
-  String? uuid;
-  String description;
-  User? createdBy;
-  String? createdAt;
-  String? updatedAt;
+class Location extends Equatable {
+  final String? uuid;
+  final String description;
+  final User? createdBy;
+  final String? createdAt;
+  final String? updatedAt;
 
   Location({
     this.uuid,
@@ -17,7 +18,11 @@ class Location {
 
   factory Location.fromJson(Map<String, dynamic> json) {
     return Location(
+      uuid: json['uuid'],
       description: json['description'],
     );
   }
+
+  @override
+  List<Object?> get props => [uuid];
 }

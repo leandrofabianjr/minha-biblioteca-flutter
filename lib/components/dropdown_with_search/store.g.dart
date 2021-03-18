@@ -116,22 +116,11 @@ mixin _$DropdownWithSearchStore<T> on _DropdownWithSearchStore<T>, Store {
   }
 
   @override
-  void select(int searchListItemIndex) {
+  void select(T item, [dynamic uniqueItem = false]) {
     final _$actionInfo = _$_DropdownWithSearchStoreActionController.startAction(
         name: '_DropdownWithSearchStore.select');
     try {
-      return super.select(searchListItemIndex);
-    } finally {
-      _$_DropdownWithSearchStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void remove(T selectedItemToRemove) {
-    final _$actionInfo = _$_DropdownWithSearchStoreActionController.startAction(
-        name: '_DropdownWithSearchStore.remove');
-    try {
-      return super.remove(selectedItemToRemove);
+      return super.select(item, uniqueItem);
     } finally {
       _$_DropdownWithSearchStoreActionController.endAction(_$actionInfo);
     }

@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:minha_biblioteca/components/dropdown_with_search/widgets.dart';
+import 'package:minha_biblioteca/components/year_picker_field.dart';
 import 'package:minha_biblioteca/models/author.dart';
+import 'package:minha_biblioteca/models/genre.dart';
+import 'package:minha_biblioteca/models/location.dart';
+import 'package:minha_biblioteca/models/publisher.dart';
 import 'package:minha_biblioteca/services/authors_service.dart';
+import 'package:minha_biblioteca/services/genres_service.dart';
+import 'package:minha_biblioteca/services/locations_service.dart';
+import 'package:minha_biblioteca/services/publishers_service.dart';
 
 class ItemsForm extends StatefulWidget {
   final String? id;
@@ -38,9 +45,13 @@ class _ItemsFormState extends State<ItemsForm> {
                 validator: (val) =>
                     val!.length < 1 ? 'Campo obrigatório' : null,
               ),
-              _buildYearFormField(),
+              YearPickerField(
+                initialYear: _year,
+                onSelect: (year) => _year = _year,
+              ),
               DropdownWithSearch<Author>(
                 context: context,
+                label: 'Autor(es)',
                 onSearch: (term) => AuthorsService().search(
                   userId: 'd3363699-fc2f-4b00-af2f-0c68c20dd951',
                   limit: 10,
@@ -52,6 +63,58 @@ class _ItemsFormState extends State<ItemsForm> {
                   authors.forEach((a) {
                     print(a.uuid);
                     print(a.name);
+                  });
+                },
+              ),
+              DropdownWithSearch<Publisher>(
+                context: context,
+                label: 'Editora(s)',
+                onSearch: (term) => PublishersService().search(
+                  userId: 'd3363699-fc2f-4b00-af2f-0c68c20dd951',
+                  limit: 10,
+                  searchByName: term,
+                ),
+                onBuildLabel: (publisher) => Text(publisher.name),
+                placeholder: 'Procure por uma editora',
+                onChangeSelectedList: (publishers) {
+                  publishers.forEach((p) {
+                    print(p.uuid);
+                    print(p.name);
+                  });
+                },
+              ),
+              DropdownWithSearch<Genre>(
+                context: context,
+                label: 'Gênero(s)',
+                onSearch: (term) => GenresService().search(
+                  userId: 'd3363699-fc2f-4b00-af2f-0c68c20dd951',
+                  limit: 10,
+                  searchByDescription: term,
+                ),
+                onBuildLabel: (genre) => Text(genre.description),
+                placeholder: 'Procure por um gênero',
+                onChangeSelectedList: (genres) {
+                  genres.forEach((g) {
+                    print(g.uuid);
+                    print(g.description);
+                  });
+                },
+              ),
+              DropdownWithSearch<Location>(
+                context: context,
+                label: 'Localização',
+                uniqueItem: true,
+                onSearch: (term) => LocationsService().search(
+                  userId: 'd3363699-fc2f-4b00-af2f-0c68c20dd951',
+                  limit: 10,
+                  searchByDescription: term,
+                ),
+                onBuildLabel: (location) => Text(location.description),
+                placeholder: 'Procure por um local',
+                onChangeSelectedList: (locations) {
+                  locations.forEach((l) {
+                    print(l.uuid);
+                    print(l.description);
                   });
                 },
               ),
@@ -67,45 +130,6 @@ class _ItemsFormState extends State<ItemsForm> {
               )
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  _buildYearFormField() {
-    final _yearController = TextEditingController();
-
-    return TextFormField(
-      controller: _yearController,
-      decoration: InputDecoration(labelText: 'Ano'),
-      keyboardType: TextInputType.number,
-      validator: (val) => val!.length < 1 ? 'Campo obrigatório' : null,
-      readOnly: true,
-      onTap: () => showDialog(
-        context: context,
-        builder: (_) => SimpleDialog(
-          title: Row(
-            children: [
-              Icon(Icons.calendar_today),
-              Text('Selecione o ano'),
-            ],
-          ),
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width * .5,
-              height: MediaQuery.of(context).size.width * .5,
-              child: YearPicker(
-                selectedDate: DateTime(_year),
-                firstDate: DateTime(0),
-                lastDate: DateTime.now(),
-                onChanged: (val) {
-                  _year = val.year;
-                  _yearController.text = _year.toString();
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-          ],
         ),
       ),
     );

@@ -1,11 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:minha_biblioteca/models/user.dart';
 
-class Genre {
-  String? uuid;
-  String description;
-  User? createdBy;
-  String? createdAt;
-  String? updatedAt;
+class Genre extends Equatable {
+  final String? uuid;
+  final String description;
+  final User? createdBy;
+  final String? createdAt;
+  final String? updatedAt;
 
   Genre({
     this.uuid,
@@ -17,7 +18,11 @@ class Genre {
 
   factory Genre.fromJson(Map<String, dynamic> json) {
     return Genre(
+      uuid: json['uuid'],
       description: json['description'],
     );
   }
+
+  @override
+  List<Object?> get props => [uuid];
 }
