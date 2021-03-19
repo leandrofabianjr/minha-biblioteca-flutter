@@ -1,5 +1,5 @@
 class User {
-  String? uuid;
+  String uuid;
   String email;
   String name;
   String? profilePictureUrl;
@@ -8,7 +8,7 @@ class User {
   String? updatedAt;
 
   User({
-    this.uuid,
+    required this.uuid,
     required this.email,
     required this.name,
     this.profilePictureUrl,

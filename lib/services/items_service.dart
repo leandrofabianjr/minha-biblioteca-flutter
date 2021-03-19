@@ -50,4 +50,19 @@ class ItemsService {
 
     return PaginatedResponse(totalCount, data);
   }
+
+  Future save({required Item item}) async {
+    var variables = <String, dynamic>{
+      'items': item.toJson(),
+    };
+
+    final result = await _client.query(QueryOptions(
+      document: GqlItems.insert,
+      variables: variables,
+    ));
+
+    if (result.hasException) {
+      throw InsertFailure(result.exception);
+    }
+  }
 }

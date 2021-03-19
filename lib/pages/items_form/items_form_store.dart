@@ -1,13 +1,15 @@
+import 'package:minha_biblioteca/models/item.dart';
+import 'package:minha_biblioteca/models/user.dart';
+import 'package:minha_biblioteca/services/items_service.dart';
 import 'package:mobx/mobx.dart';
 
 import 'package:minha_biblioteca/models/author.dart';
 import 'package:minha_biblioteca/models/genre.dart';
 import 'package:minha_biblioteca/models/location.dart';
 import 'package:minha_biblioteca/models/publisher.dart';
+import 'package:uuid/uuid.dart';
 
-// part 'items_form_store.g.dart';
-
-class _$ItemsFormStore {}
+part 'items_form_store.g.dart';
 
 class ItemsFormStore = _ItemsFormStore with _$ItemsFormStore;
 
@@ -16,24 +18,19 @@ abstract class _ItemsFormStore with Store {
   bool loading = false;
 
   @observable
-  // ignore: avoid_init_to_null
-  String? description = null;
+  String? description;
 
   @observable
-  // ignore: avoid_init_to_null
-  int? year = null;
+  int? year;
 
   @observable
-  // ignore: avoid_init_to_null
-  ObservableList<Author>? authors = null;
+  ObservableList<Author>? authors;
 
   @observable
-  // ignore: avoid_init_to_null
-  ObservableList<Publisher>? publishers = null;
+  ObservableList<Publisher>? publishers;
 
   @observable
-  // ignore: avoid_init_to_null
-  ObservableList<Genre>? genres = null;
+  ObservableList<Genre>? genres;
 
   @observable
   Location? _location;
@@ -64,22 +61,49 @@ abstract class _ItemsFormStore with Store {
   }) : _location = location;
 
   bool _isFormValid() {
-    if (description!.length > 0 &&
-        year != null &&
-        authors!.length > 0 &&
-        publishers!.length > 0 &&
-        genres!.length > 0 &&
-        location != null) {
-      return true;
+    if (description?.isNotEmpty != null && description!.isNotEmpty) {
+      if (year != null) {
+        if (authors?.length != null && authors!.length > 0) {
+          if (publishers?.length != null && publishers!.length > 0) {
+            if (genres?.length != null && genres!.length > 0) {
+              if (location != null) {
+                return true;
+              }
+            }
+          }
+        }
+      }
     }
     return false;
   }
 
-  void save() {
+  Future save() async {
     loading = true;
 
-    if (hasErrors = _isFormValid()) {
-      return;
+    try {
+      if (hasErrors = !_isFormValid()) {
+        return;
+      }
+
+      final user = User(
+        email: '',
+        name: '',
+        uuid: 'cf86ad8f-83b6-4573-b8b4-4dda3a7277d7',
+      );
+      await ItemsService().save(
+        item: Item(
+          uuid: Uuid().v4(),
+          user: user,
+          description: description!,
+          year: year!,
+          authors: authors!,
+          genres: genres!,
+          publishers: publishers!,
+          location: location!,
+        ),
+      );
+    } catch (e) {
+      print(e);
     }
 
     loading = false;

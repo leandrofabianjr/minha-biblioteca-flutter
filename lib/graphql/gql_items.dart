@@ -54,4 +54,14 @@ query (
   }
 }
 ''');
+
+  static get insert => gql(r'''
+mutation ($items: [items_insert_input!]! = {}) {
+    insert_items(objects: $items) {
+        returning {
+            uuid
+        }
+    }
+}
+''');
 }

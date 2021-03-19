@@ -12,7 +12,7 @@ class Item {
   List<Genre> genres;
   List<Publisher> publishers;
   Location location;
-  User? createdBy;
+  User? user;
   String? createdAt;
   String? updatedAt;
 
@@ -24,7 +24,7 @@ class Item {
     required this.genres,
     required this.publishers,
     required this.location,
-    this.createdBy,
+    this.user,
     this.createdAt,
     this.updatedAt,
   });
@@ -44,5 +44,24 @@ class Item {
           .toList(),
       location: Location.fromJson(json['location']),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'uuid': this.uuid,
+      'description': this.description,
+      'year': this.year,
+      'user_id': user?.uuid,
+      'authors': {
+        'data': this.authors.map((a) => {'author_id': a.uuid}).toList(),
+      },
+      'genres': {
+        'data': this.genres.map((g) => {'genre_id': g.uuid}).toList(),
+      },
+      'publishers': {
+        'data': this.publishers.map((p) => {'publisher_id': p.uuid}).toList(),
+      },
+      'location_id': this.location.uuid,
+    };
   }
 }

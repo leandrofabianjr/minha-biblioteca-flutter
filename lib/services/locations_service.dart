@@ -12,6 +12,9 @@ class LocationsService {
     int? limit,
     String? searchByDescription,
   }) async {
+    print('-----------');
+    print('search');
+    print('-----------');
     var variables = <String, dynamic>{
       'userId': userId,
     };

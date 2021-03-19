@@ -1,4 +1,5 @@
 import 'package:minha_biblioteca/models/item.dart';
+import 'package:minha_biblioteca/models/user.dart';
 import 'package:minha_biblioteca/services/items_service.dart';
 import 'package:mobx/mobx.dart';
 
@@ -43,9 +44,14 @@ abstract class _ItemsListStore with Store {
   @action
   Future fetch() async {
     loading = true;
+    final user = User(
+      email: '',
+      name: '',
+      uuid: 'cf86ad8f-83b6-4573-b8b4-4dda3a7277d7',
+    );
     try {
       final response = await _service.fetch(
-        userId: '',
+        userId: user.uuid,
         limit: rowsPerPage,
         offset: (page - 1) * rowsPerPage,
       );

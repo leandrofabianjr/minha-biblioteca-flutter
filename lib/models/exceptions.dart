@@ -7,3 +7,9 @@ class FetchFailure extends Failure {
 
   FetchFailure([this.exception]);
 }
+
+class InsertFailure extends Failure {
+  final OperationException? exception;
+
+  InsertFailure([this.exception]);
+}

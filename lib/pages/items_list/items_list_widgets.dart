@@ -165,7 +165,7 @@ class ItemsDataTableSource extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => totalCount;
+  int get rowCount => items.length;
 
   @override
   int get selectedRowCount => PaginatedDataTable.defaultRowsPerPage;
