@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:minha_biblioteca/components/dropdown_with_search/widgets.dart';
 import 'package:minha_biblioteca/components/year_picker_field.dart';
+import 'package:minha_biblioteca/components/toast.dart';
 import 'package:minha_biblioteca/models/author.dart';
 import 'package:minha_biblioteca/models/genre.dart';
 import 'package:minha_biblioteca/models/location.dart';
@@ -26,7 +28,8 @@ class ItemsForm extends StatefulWidget {
 
 class _ItemsFormState extends State<ItemsForm> {
   late final store = ItemsFormStore();
-  ReactionDisposer? _disposer;
+  ReactionDisposer? _disposerErrorMessage;
+  ReactionDisposer? _disposerSuccess;
 
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
@@ -34,14 +37,26 @@ class _ItemsFormState extends State<ItemsForm> {
   void initState() {
     super.initState();
     // a delay is used to avoid showing the snackbar too much when the connection drops in and out repeatedly
-    _disposer = reaction(
-      (_) => store.hasErrors,
+    _disposerErrorMessage = reaction(
+      (_) => store.errorMessage,
       (_) {
-        if (store.hasErrors) {
-          _scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(
-            content: Text('Preencha todos os campos corretamente'),
-            backgroundColor: Colors.red,
-          ));
+        if (store.errorMessage != null) {
+          _scaffoldMessengerKey.currentState.toast
+              .error(message: store.errorMessage!);
+          store.errorMessage = null;
+        }
+      },
+    );
+    _disposerSuccess = reaction(
+      (_) => store.success,
+      (_) {
+        if (store.success != null && store.success!) {
+          _scaffoldMessengerKey.currentState.toast.success(
+              message: 'Item criado com sucesso',
+              action: SnackBarAction(
+                  label: 'Voltar para a listagem',
+                  onPressed: () => Modular.to.pushNamed('/items')));
+          store.success = null;
         }
       },
     );
@@ -49,7 +64,8 @@ class _ItemsFormState extends State<ItemsForm> {
 
   @override
   void dispose() {
-    _disposer!();
+    _disposerErrorMessage!();
+    _disposerSuccess!();
     super.dispose();
   }
 

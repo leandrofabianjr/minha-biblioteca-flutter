@@ -33,23 +33,13 @@ abstract class _ItemsFormStore with Store {
   ObservableList<Genre>? genres;
 
   @observable
-  Location? _location;
-
-  final _$locationAtom = Atom(name: '_ItemsFormStore.location');
-
-  Location? get location {
-    _$locationAtom.reportRead();
-    return _location;
-  }
-
-  set location(Location? value) {
-    _$locationAtom.reportWrite(value, _location, () {
-      _location = value;
-    });
-  }
+  Location? location;
 
   @observable
-  bool hasErrors = false;
+  String? errorMessage;
+
+  @observable
+  bool? success;
 
   _ItemsFormStore({
     this.description,
@@ -57,8 +47,8 @@ abstract class _ItemsFormStore with Store {
     this.authors,
     this.publishers,
     this.genres,
-    Location? location,
-  }) : _location = location;
+    this.location,
+  });
 
   bool _isFormValid() {
     if (description?.isNotEmpty != null && description!.isNotEmpty) {
@@ -74,6 +64,8 @@ abstract class _ItemsFormStore with Store {
         }
       }
     }
+
+    errorMessage = 'Preencha todos os campos corretamente';
     return false;
   }
 
@@ -81,7 +73,7 @@ abstract class _ItemsFormStore with Store {
     loading = true;
 
     try {
-      if (hasErrors = !_isFormValid()) {
+      if (!_isFormValid()) {
         return;
       }
 
@@ -102,10 +94,23 @@ abstract class _ItemsFormStore with Store {
           location: location!,
         ),
       );
+      success = true;
+
+      _clearForm();
     } catch (e) {
       print(e);
+      errorMessage = 'Desculpe! Não foi possível criar o item.';
     }
 
     loading = false;
+  }
+
+  void _clearForm() {
+    description = null;
+    year = null;
+    authors?.clear();
+    genres?.clear();
+    publishers?.clear();
+    location = null;
   }
 }

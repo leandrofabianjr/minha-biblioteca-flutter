@@ -99,33 +99,48 @@ mixin _$ItemsFormStore on _ItemsFormStore, Store {
     });
   }
 
-  final _$_locationAtom = Atom(name: '_ItemsFormStore._location');
+  final _$locationAtom = Atom(name: '_ItemsFormStore.location');
 
   @override
-  Location? get _location {
-    _$_locationAtom.reportRead();
-    return super._location;
+  Location? get location {
+    _$locationAtom.reportRead();
+    return super.location;
   }
 
   @override
-  set _location(Location? value) {
-    _$_locationAtom.reportWrite(value, super._location, () {
-      super._location = value;
+  set location(Location? value) {
+    _$locationAtom.reportWrite(value, super.location, () {
+      super.location = value;
     });
   }
 
-  final _$hasErrorsAtom = Atom(name: '_ItemsFormStore.hasErrors');
+  final _$errorMessageAtom = Atom(name: '_ItemsFormStore.errorMessage');
 
   @override
-  bool get hasErrors {
-    _$hasErrorsAtom.reportRead();
-    return super.hasErrors;
+  String? get errorMessage {
+    _$errorMessageAtom.reportRead();
+    return super.errorMessage;
   }
 
   @override
-  set hasErrors(bool value) {
-    _$hasErrorsAtom.reportWrite(value, super.hasErrors, () {
-      super.hasErrors = value;
+  set errorMessage(String? value) {
+    _$errorMessageAtom.reportWrite(value, super.errorMessage, () {
+      super.errorMessage = value;
+    });
+  }
+
+  final _$successAtom = Atom(name: '_ItemsFormStore.success');
+
+  @override
+  bool? get success {
+    _$successAtom.reportRead();
+    return super.success;
+  }
+
+  @override
+  set success(bool? value) {
+    _$successAtom.reportWrite(value, super.success, () {
+      super.success = value;
     });
   }
 
@@ -138,7 +153,9 @@ year: ${year},
 authors: ${authors},
 publishers: ${publishers},
 genres: ${genres},
-hasErrors: ${hasErrors}
+location: ${location},
+errorMessage: ${errorMessage},
+success: ${success}
     ''';
   }
 }
