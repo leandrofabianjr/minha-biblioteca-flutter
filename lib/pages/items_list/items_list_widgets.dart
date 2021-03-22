@@ -63,10 +63,7 @@ class ItemsList extends StatelessWidget {
             onSort: _sort,
           ),
         ],
-        source: ItemsDataTableSource(
-          items: itemsList.items,
-          totalCount: itemsList.totalCount,
-        ),
+        source: ItemsDataTableSource(items: itemsList.items),
         header: Text('Items'),
         actions: [
           IconButton(
@@ -125,9 +122,8 @@ class ItemsList extends StatelessWidget {
 
 class ItemsDataTableSource extends DataTableSource {
   final List<Item> items;
-  final int totalCount;
 
-  ItemsDataTableSource({required this.items, required this.totalCount});
+  ItemsDataTableSource({required this.items});
   @override
   DataRow? getRow(int index) {
     final item = items[index];
@@ -168,5 +164,5 @@ class ItemsDataTableSource extends DataTableSource {
   int get rowCount => items.length;
 
   @override
-  int get selectedRowCount => PaginatedDataTable.defaultRowsPerPage;
+  int get selectedRowCount => 0;
 }
