@@ -1,15 +1,37 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:minha_biblioteca/models/user.dart';
+import 'package:minha_biblioteca/services/google_sign_in_service.dart';
+import 'package:minha_biblioteca/services/users_service.dart';
 
 class Auth {
-  static bool get isUserLogged => currentUser != null;
+  static bool get isUserLogged => GoogleSignInService().currentUser != null;
 
-  static User? get currentUser => FirebaseAuth.instance.currentUser;
+  static Future<User?> get currentUser async {
+    final googleUid = GoogleSignInService().currentUser?.id;
+    if (googleUid == null) return null;
+    return await UsersService().getByGoogleUid(googleUid: googleUid);
+  }
 
-  static Future<UserCredential> signInWithGoogle() async {
-    await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
+  static Future<User?> signInWithGoogle() async {
+    final account = await GoogleSignInService().signIn();
+    print(account);
+    if (account == null) return null;
 
-    final GoogleAuthProvider googleProvider = GoogleAuthProvider();
+    final user = await currentUser;
+    print(user);
+    if (user != null) return user;
 
-    return await FirebaseAuth.instance.signInWithPopup(googleProvider);
+    try {
+      final newUser = await UsersService().create(
+        googleUid: account.id,
+        email: account.email,
+        name: account.displayName ?? account.email,
+        profilePictureUrl: account.photoUrl,
+      );
+      return newUser;
+    } catch (e) {
+      print('Erro ao criar novo usuário');
+      print(e);
+      return null;
+    }
   }
 }
