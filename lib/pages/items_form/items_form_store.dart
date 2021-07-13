@@ -1,5 +1,5 @@
 import 'package:minha_biblioteca/models/item.dart';
-import 'package:minha_biblioteca/models/user.dart';
+import 'package:minha_biblioteca/services/auth.dart';
 import 'package:minha_biblioteca/services/items_service.dart';
 import 'package:mobx/mobx.dart';
 
@@ -77,11 +77,7 @@ abstract class _ItemsFormStore with Store {
         return;
       }
 
-      final user = User(
-        email: '',
-        name: '',
-        uuid: 'cf86ad8f-83b6-4573-b8b4-4dda3a7277d7',
-      );
+      final user = await Auth().currentUser;
       await ItemsService().save(
         item: Item(
           uuid: Uuid().v4(),
