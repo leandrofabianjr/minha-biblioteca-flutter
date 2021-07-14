@@ -27,7 +27,7 @@ class ItemsForm extends StatefulWidget {
 }
 
 class _ItemsFormState extends State<ItemsForm> {
-  late final store = ItemsFormStore();
+  final store = ItemsFormStore();
   ReactionDisposer? _disposerErrorMessage;
   ReactionDisposer? _disposerSuccess;
 

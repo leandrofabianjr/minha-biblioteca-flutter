@@ -20,6 +20,7 @@ class Toast {
     _scaffoldMessengerState?.showSnackBar(SnackBar(
       content: SafeArea(
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, color: foregroundColor),
             SizedBox(width: 8),

@@ -3,14 +3,12 @@ import 'package:minha_biblioteca/guards/authenticated_guard.dart';
 import 'package:minha_biblioteca/guards/not_authenticated_guard.dart';
 import 'package:minha_biblioteca/pages/items_form/items_form_widgets.dart';
 import 'package:minha_biblioteca/pages/items_list/items_list_widgets.dart';
-import 'package:minha_biblioteca/pages/login/login_page.dart';
+import 'package:minha_biblioteca/pages/login/login_widgets.dart';
 
 class AppModule extends Module {
-  // Provide a list of dependencies to inject into your project
   @override
   final List<Bind> binds = [];
 
-  // Provide all the routes for your module
   @override
   final List<ModularRoute> routes = [
     ChildRoute(
