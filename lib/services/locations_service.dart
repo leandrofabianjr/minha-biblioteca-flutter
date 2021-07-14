@@ -3,23 +3,21 @@ import 'package:minha_biblioteca/graphql/gql_locations.dart';
 import 'package:minha_biblioteca/graphql/server.dart';
 import 'package:minha_biblioteca/models/location.dart';
 import 'package:minha_biblioteca/models/exceptions.dart';
+import 'package:minha_biblioteca/services/auth.dart';
 
 class LocationsService {
   final _client = Server.client;
 
   Future<List<Location>> search({
-    required String userId,
-    int? limit,
+    int limit = 10,
     String? searchByDescription,
   }) async {
-    print('-----------');
-    print('search');
-    print('-----------');
+    final user = await Auth().currentUser;
     var variables = <String, dynamic>{
-      'userId': userId,
+      'userId': user!.uuid,
+      'limit': limit,
     };
 
-    if (limit != null) variables['limit'] = limit;
     if (searchByDescription != null)
       variables['searchByDescription'] = '%$searchByDescription%';
 

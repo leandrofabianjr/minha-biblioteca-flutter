@@ -3,20 +3,21 @@ import 'package:minha_biblioteca/graphql/gql_genres.dart';
 import 'package:minha_biblioteca/graphql/server.dart';
 import 'package:minha_biblioteca/models/genre.dart';
 import 'package:minha_biblioteca/models/exceptions.dart';
+import 'package:minha_biblioteca/services/auth.dart';
 
 class GenresService {
   final _client = Server.client;
 
   Future<List<Genre>> search({
-    required String userId,
-    int? limit,
+    int limit = 10,
     String? searchByDescription,
   }) async {
+    final user = await Auth().currentUser;
     var variables = <String, dynamic>{
-      'userId': userId,
+      'userId': user!.uuid,
+      'limit': limit,
     };
 
-    if (limit != null) variables['limit'] = limit;
     if (searchByDescription != null)
       variables['searchByDescription'] = '%$searchByDescription%';
 

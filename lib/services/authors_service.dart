@@ -3,20 +3,21 @@ import 'package:minha_biblioteca/graphql/gql_authors.dart';
 import 'package:minha_biblioteca/graphql/server.dart';
 import 'package:minha_biblioteca/models/author.dart';
 import 'package:minha_biblioteca/models/exceptions.dart';
+import 'package:minha_biblioteca/services/auth.dart';
 
 class AuthorsService {
   final _client = Server.client;
 
   Future<List<Author>> search({
-    required String userId,
-    int? limit,
+    int limit = 10,
     String? searchByName,
   }) async {
+    final user = await Auth().currentUser;
     var variables = <String, dynamic>{
-      'userId': userId,
+      'userId': user!.uuid,
+      'limit': limit,
     };
 
-    if (limit != null) variables['limit'] = limit;
     if (searchByName != null) variables['searchByName'] = '%$searchByName%';
 
     final result = await _client.query(QueryOptions(

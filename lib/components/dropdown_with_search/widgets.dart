@@ -1,10 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:minha_biblioteca/components/dropdown_with_search/store.dart';
 
-typedef OnSearch<T> = Future<List<T>> Function(String term);
+typedef OnSearch<T> = Future<List<T>> Function(String? term);
 typedef OnChangeSelectedList<T> = void Function(List<T> selecteds);
 
 class DropdownWithSearch<T> extends StatelessWidget {
@@ -37,6 +35,7 @@ class DropdownWithSearch<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: double.maxFinite,
       child: Column(
@@ -47,14 +46,13 @@ class DropdownWithSearch<T> extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: Theme.of(context).textTheme.caption!.fontSize,
+                color: theme.primaryColor,
+                fontSize: theme.textTheme.caption!.fontSize,
               ),
             ),
           ),
           Observer(
             builder: (context) {
-              print('selecionados');
               return Wrap(
                 children: List<Widget>.generate(
                   store.selectedList.length,
@@ -64,7 +62,7 @@ class DropdownWithSearch<T> extends StatelessWidget {
                       label: onBuildLabel(store.selectedList[i]),
                       onDeleted: () => store.select(store.selectedList[i]),
                       deleteIcon: Icon(Icons.delete),
-                      deleteIconColor: Theme.of(context).accentColor,
+                      deleteIconColor: theme.accentColor,
                     ),
                   ),
                 )..add(
@@ -78,7 +76,7 @@ class DropdownWithSearch<T> extends StatelessWidget {
                           builder: _buildBottomSheet,
                         );
                       },
-                      backgroundColor: Theme.of(context).primaryColor,
+                      backgroundColor: theme.primaryColor,
                     ),
                   ),
               );
@@ -90,12 +88,13 @@ class DropdownWithSearch<T> extends StatelessWidget {
   }
 
   Widget _buildBottomSheet(BuildContext context) {
+    store.startDelayedSearh();
     return Column(
       children: [
         Padding(
           padding: EdgeInsets.all(8),
           child: TextField(
-            controller: TextEditingController()..text = store.term,
+            controller: TextEditingController(text: store.term),
             decoration: InputDecoration(
               labelText: placeholder,
               floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -107,7 +106,6 @@ class DropdownWithSearch<T> extends StatelessWidget {
         ),
         Expanded(
           child: Observer(builder: (context) {
-            print('pesquisa');
             if (!store.loading) {
               if (store.searchList.length > 0) {
                 return ListView.builder(
@@ -125,7 +123,7 @@ class DropdownWithSearch<T> extends StatelessWidget {
               }
               return Center(
                 child: Text(
-                  store.term.isEmpty
+                  store.term?.isEmpty ?? true
                       ? 'Pesquise no campo acima'
                       : 'Nenhum resultado encontrado',
                 ),

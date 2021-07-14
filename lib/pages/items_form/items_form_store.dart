@@ -1,6 +1,10 @@
 import 'package:minha_biblioteca/models/item.dart';
 import 'package:minha_biblioteca/services/auth.dart';
+import 'package:minha_biblioteca/services/authors_service.dart';
+import 'package:minha_biblioteca/services/genres_service.dart';
 import 'package:minha_biblioteca/services/items_service.dart';
+import 'package:minha_biblioteca/services/locations_service.dart';
+import 'package:minha_biblioteca/services/publishers_service.dart';
 import 'package:mobx/mobx.dart';
 
 import 'package:minha_biblioteca/models/author.dart';
@@ -35,11 +39,7 @@ abstract class _ItemsFormStore with Store {
   @observable
   Location? location;
 
-  @observable
-  String? errorMessage;
-
-  @observable
-  bool? success;
+  get initialYear => year ?? 2000;
 
   _ItemsFormStore({
     this.description,
@@ -49,6 +49,46 @@ abstract class _ItemsFormStore with Store {
     this.genres,
     this.location,
   });
+
+  Future<List<Author>> filterAuthors(String? term) {
+    return AuthorsService().search(
+      searchByName: term,
+    );
+  }
+
+  onChangeAuthors(List<Author> authors) {
+    authors = ObservableList.of(authors);
+  }
+
+  Future<List<Publisher>> filterPublishers(String? term) {
+    return PublishersService().search(
+      searchByName: term,
+    );
+  }
+
+  onChangePublishers(List<Publisher> publishers) {
+    publishers = ObservableList.of(publishers);
+  }
+
+  Future<List<Genre>> filterGenres(String? term) {
+    return GenresService().search(
+      searchByDescription: term,
+    );
+  }
+
+  onChangeGenres(List<Genre> genres) {
+    genres = ObservableList.of(genres);
+  }
+
+  Future<List<Location>> filterLocations(String? term) {
+    return LocationsService().search(
+      searchByDescription: term,
+    );
+  }
+
+  onChangeLocations(List<Location> locations) {
+    location = locations.length > 0 ? locations.first : null;
+  }
 
   bool _isFormValid() {
     if (description?.isNotEmpty != null && description!.isNotEmpty) {
@@ -65,16 +105,15 @@ abstract class _ItemsFormStore with Store {
       }
     }
 
-    errorMessage = 'Preencha todos os campos corretamente';
     return false;
   }
 
-  Future save() async {
+  Future<String?> save() async {
     loading = true;
 
     try {
       if (!_isFormValid()) {
-        return;
+        return 'Preencha todos os campos corretamente';
       }
 
       final user = await Auth().currentUser;
@@ -90,15 +129,14 @@ abstract class _ItemsFormStore with Store {
           location: location!,
         ),
       );
-      success = true;
-
       _clearForm();
     } catch (e) {
       print(e);
-      errorMessage = 'Desculpe! Não foi possível criar o item.';
+      return 'Desculpe! Não foi possível criar o item.';
     }
 
     loading = false;
+    return null;
   }
 
   void _clearForm() {

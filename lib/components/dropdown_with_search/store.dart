@@ -21,13 +21,12 @@ class DropdownWithSearchStore<T> = _DropdownWithSearchStore<T>
     with _$DropdownWithSearchStore<T>;
 
 abstract class _DropdownWithSearchStore<T> with Store implements Disposable {
-  final OnSearch<T> _onSearch;
+  final OnSearch<T> onSearch;
 
   @observable
   ObservableList<T> selectedList;
 
-  // ignore: avoid_init_to_null
-  OnChangeSelectedList<T>? onChangeSelectedList = null;
+  OnChangeSelectedList<T>? onChangeSelectedList;
 
   @observable
   ObservableList<DropdownListItem<T>> searchList =
@@ -37,25 +36,21 @@ abstract class _DropdownWithSearchStore<T> with Store implements Disposable {
   bool loading = false;
 
   @observable
-  String error = '';
+  String? error;
 
-  String term = '';
+  String? term;
 
-  // ignore: avoid_init_to_null
-  Timer? _debounce = null;
+  Timer? _debounce;
 
   _DropdownWithSearchStore({
-    required OnSearch<T> onSearch,
-    // ignore: avoid_init_to_null
-    List<T>? selectedList = null,
+    required this.onSearch,
+    List<T>? selectedList,
     this.onChangeSelectedList,
-  })  : _onSearch = onSearch,
-        selectedList = ObservableList.of(
+  }) : selectedList = ObservableList.of(
           selectedList == null ? <T>[] : selectedList,
         );
 
-  @action
-  void startDelayedSearh(String term) {
+  void startDelayedSearh([String? term]) {
     this.term = term;
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(Duration(milliseconds: 500), () {
@@ -68,12 +63,11 @@ abstract class _DropdownWithSearchStore<T> with Store implements Disposable {
     _debounce?.cancel();
   }
 
-  @action
   Future fetch() async {
     loading = true;
     try {
       print('iniciou pesquisa');
-      final response = await _onSearch(term);
+      final response = await onSearch(term);
       final dropdownList = response
           .map(
             (i) => DropdownListItem<T>(i, selected: selectedList.contains(i)),
@@ -90,7 +84,6 @@ abstract class _DropdownWithSearchStore<T> with Store implements Disposable {
     loading = false;
   }
 
-  @action
   void select(T item, [uniqueItem = false]) {
     bool selected = true;
     if (uniqueItem) {

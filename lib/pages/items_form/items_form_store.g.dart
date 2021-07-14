@@ -114,36 +114,6 @@ mixin _$ItemsFormStore on _ItemsFormStore, Store {
     });
   }
 
-  final _$errorMessageAtom = Atom(name: '_ItemsFormStore.errorMessage');
-
-  @override
-  String? get errorMessage {
-    _$errorMessageAtom.reportRead();
-    return super.errorMessage;
-  }
-
-  @override
-  set errorMessage(String? value) {
-    _$errorMessageAtom.reportWrite(value, super.errorMessage, () {
-      super.errorMessage = value;
-    });
-  }
-
-  final _$successAtom = Atom(name: '_ItemsFormStore.success');
-
-  @override
-  bool? get success {
-    _$successAtom.reportRead();
-    return super.success;
-  }
-
-  @override
-  set success(bool? value) {
-    _$successAtom.reportWrite(value, super.success, () {
-      super.success = value;
-    });
-  }
-
   @override
   String toString() {
     return '''
@@ -153,9 +123,7 @@ year: ${year},
 authors: ${authors},
 publishers: ${publishers},
 genres: ${genres},
-location: ${location},
-errorMessage: ${errorMessage},
-success: ${success}
+location: ${location}
     ''';
   }
 }

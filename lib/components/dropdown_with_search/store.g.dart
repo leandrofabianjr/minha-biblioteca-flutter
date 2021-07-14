@@ -82,48 +82,16 @@ mixin _$DropdownWithSearchStore<T> on _DropdownWithSearchStore<T>, Store {
   final _$errorAtom = Atom(name: '_DropdownWithSearchStore.error');
 
   @override
-  String get error {
+  String? get error {
     _$errorAtom.reportRead();
     return super.error;
   }
 
   @override
-  set error(String value) {
+  set error(String? value) {
     _$errorAtom.reportWrite(value, super.error, () {
       super.error = value;
     });
-  }
-
-  final _$fetchAsyncAction = AsyncAction('_DropdownWithSearchStore.fetch');
-
-  @override
-  Future<dynamic> fetch() {
-    return _$fetchAsyncAction.run(() => super.fetch());
-  }
-
-  final _$_DropdownWithSearchStoreActionController =
-      ActionController(name: '_DropdownWithSearchStore');
-
-  @override
-  void startDelayedSearh(String term) {
-    final _$actionInfo = _$_DropdownWithSearchStoreActionController.startAction(
-        name: '_DropdownWithSearchStore.startDelayedSearh');
-    try {
-      return super.startDelayedSearh(term);
-    } finally {
-      _$_DropdownWithSearchStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void select(T item, [dynamic uniqueItem = false]) {
-    final _$actionInfo = _$_DropdownWithSearchStoreActionController.startAction(
-        name: '_DropdownWithSearchStore.select');
-    try {
-      return super.select(item, uniqueItem);
-    } finally {
-      _$_DropdownWithSearchStoreActionController.endAction(_$actionInfo);
-    }
   }
 
   @override
